@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
+import { NgModel } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { UserComponent } from './user/user.component';
 import { DUMMY_USERS } from './dummy-users';
 import { TasksComponent } from './tasks/tasks.component';
@@ -15,7 +17,8 @@ import { TasksComponent } from './tasks/tasks.component';
 export class AppComponent {
   title = 'EasyTask-App';
   users = DUMMY_USERS;
-  selectedUserId = 'u1';
+  // selectedUserId = 'u1';
+  selectedUserId?: string;
 
   get selectedUser() {
     return this.users.find((user) => user.id === this.selectedUserId);
