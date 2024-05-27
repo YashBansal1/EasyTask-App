@@ -1,6 +1,14 @@
-import { Component, EventEmitter, Output, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NewTaskData } from '../task/task.model';
+import { TaskService } from '../task.service';
 
 @Component({
   selector: 'app-new-task',
@@ -10,25 +18,43 @@ import { NewTaskData } from '../task/task.model';
   styleUrl: './new-task.component.css',
 })
 export class NewTaskComponent {
-  @Output() cancel = new EventEmitter<void>();
-  @Output() add = new EventEmitter<NewTaskData>();
+  @Output() close = new EventEmitter<void>();
+  // @Output() cancel = new EventEmitter<void>();
+  // @Output() add = new EventEmitter<NewTaskData>();
+
+  @Input({ required: true }) userId!: string;
   enteredTitle = '';
   enteredSummary = '';
   enteredDueDate = '';
+
+  private taskService = inject(TaskService);
 
   // enteredTitle = signal('');
   // enteredSummary = signal('');
   // enteredDueDate = signal('');
 
   onCancel() {
-    this.cancel.emit();
+    // this.cancel.emit();
+    this.close.emit();
   }
 
   onSubmit() {
-    this.add.emit({
-      title: this.enteredTitle,
-      summary: this.enteredSummary,
-      date: this.enteredDueDate,
-    });
+    this.taskService.addTask(
+      {
+        title: this.enteredTitle,
+        summary: this.enteredSummary,
+        date: this.enteredDueDate,
+      },
+      this.userId
+    );
+    this.close.emit();
+    // this.add.emit(
+    //     {
+    //     title: this.enteredTitle,
+    //     summary: this.enteredSummary,
+    //     date: this.enteredDueDate,
+    //   }
+
+    // );
   }
 }
